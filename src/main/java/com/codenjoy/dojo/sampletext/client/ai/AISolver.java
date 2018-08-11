@@ -36,12 +36,12 @@ import com.codenjoy.dojo.services.RandomDice;
  * Обрати внимание на {@see YourSolverTest} - там приготовлен тестовый
  * фреймворк для тебя.
  */
-public class ApofigSolver extends AbstractTextSolver {
+public class AISolver extends AbstractTextSolver {
 
     private Dice dice;
     private AbstractTextBoard board;
 
-    public ApofigSolver(Dice dice) {
+    public AISolver(Dice dice) {
         this.dice = dice;
     }
 
@@ -56,7 +56,7 @@ public class ApofigSolver extends AbstractTextSolver {
 
     public static void start(String name, Dice dice) {
         WebSocketRunner.runAI(name,
-                new ApofigSolver(dice),
+                new AISolver(dice),
                 new Board());
     }
 }
