@@ -36,7 +36,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.mock;
 
-public class SampleTextPerformanceTest {
+public class PerformanceTest {
 
     @Test
     public void test() {
