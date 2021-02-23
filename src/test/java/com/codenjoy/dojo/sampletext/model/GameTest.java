@@ -37,7 +37,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SingleplayerTest {
+public class GameTest {
 
     private SampleText game;
     private Hero hero;
