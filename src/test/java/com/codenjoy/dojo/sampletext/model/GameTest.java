@@ -25,40 +25,34 @@ package com.codenjoy.dojo.sampletext.model;
 
 import com.codenjoy.dojo.sampletext.TestGameSettings;
 import com.codenjoy.dojo.sampletext.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
+import com.codenjoy.dojo.services.dice.MockDice;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.stubbing.OngoingStubbing;
 
 import static com.codenjoy.dojo.sampletext.services.GameSettings.Keys.QUESTIONS;
 import static com.codenjoy.dojo.utils.JsonUtils.clean;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class GameTest {
 
     private SampleText game;
     private Hero hero;
-    private Dice dice;
+    private MockDice dice;
     private EventListener listener;
     private Player player;
     private GameSettings settings;
 
     @Before
     public void setup() {
-        dice = mock(Dice.class);
+        dice = new MockDice();
         settings = new TestGameSettings();
     }
 
-    private void dice(int...ints) {
-        OngoingStubbing<Integer> when = when(dice.next(anyInt()));
-        for (int i : ints) {
-            when = when.thenReturn(i);
-        }
+    private void dice(Integer... next) {
+        dice.then(next);
     }
 
     private void givenQA(String... questionAnswers) {

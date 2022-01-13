@@ -27,9 +27,9 @@ import com.codenjoy.dojo.sampletext.TestGameSettings;
 import com.codenjoy.dojo.sampletext.services.Event;
 import com.codenjoy.dojo.sampletext.services.GameRunner;
 import com.codenjoy.dojo.sampletext.services.GameSettings;
-import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Game;
+import com.codenjoy.dojo.services.dice.MockDice;
 import com.codenjoy.dojo.services.multiplayer.Single;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.utils.JsonUtils;
@@ -38,7 +38,6 @@ import org.junit.Test;
 
 import static com.codenjoy.dojo.sampletext.services.GameSettings.Keys.QUESTIONS;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 public class MultiplayerTest {
@@ -49,7 +48,7 @@ public class MultiplayerTest {
     private Game game1;
     private Game game2;
     private Game game3;
-    private Dice dice;
+    private MockDice dice;
     private SampleText field;
 
     // появляется другие игроки, игра становится мультипользовательской
@@ -61,7 +60,7 @@ public class MultiplayerTest {
                         "question2=answer2\n" +
                         "question3=answer3");
 
-        dice = mock(Dice.class);
+        dice = new MockDice();
         field = new SampleText(settings.level(), dice, settings);
         PrinterFactory factory = new GameRunner().getPrinterFactory();
 
@@ -87,8 +86,8 @@ public class MultiplayerTest {
         game3.newGame();
     }
 
-    private void dice(int x, int y) {
-        when(dice.next(anyInt())).thenReturn(x, y);
+    private void dice(Integer... next) {
+        dice.then(next);
     }
 
     private void asrtFl1(String expected) {
