@@ -27,7 +27,6 @@ import com.codenjoy.dojo.sampletext.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.printer.BoardReader;
-import com.codenjoy.dojo.services.settings.SettingsReader;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -92,6 +91,11 @@ public class SampleText implements Field {
     @Override
     public GameSettings settings() {
         return settings;
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 
     @Override
