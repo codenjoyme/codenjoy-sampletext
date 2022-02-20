@@ -26,7 +26,6 @@ package com.codenjoy.dojo.sampletext.model;
 import com.codenjoy.dojo.sampletext.services.GameSettings;
 import com.codenjoy.dojo.services.Dice;
 import com.codenjoy.dojo.services.Tickable;
-import com.codenjoy.dojo.services.printer.BoardReader;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -66,11 +65,6 @@ public class SampleText implements Field {
         return players.stream()
                 .map(Player::getHero)
                 .collect(toList());
-    }
-
-    @Override
-    public BoardReader<Player> reader() {
-        return null;
     }
 
     @Override
