@@ -22,10 +22,10 @@ package com.codenjoy.dojo.sampletext.services;
  * #L%
  */
 
-import com.codenjoy.dojo.sampletext.model.Level;
-import com.codenjoy.dojo.sampletext.model.LevelImpl;
+import com.codenjoy.dojo.sampletext.model.algorithms.SampleAlgorithm;
 import com.codenjoy.dojo.services.event.Calculator;
 import com.codenjoy.dojo.services.incativity.InactivitySettings;
+import com.codenjoy.dojo.services.questionanswer.levels.Level;
 import com.codenjoy.dojo.services.semifinal.SemifinalSettings;
 import com.codenjoy.dojo.services.settings.PropertiesKey;
 import com.codenjoy.dojo.services.settings.SettingsImpl;
@@ -95,8 +95,8 @@ public class GameSettings extends SettingsImpl
                 "question20=answer20");
     }
 
-    public Level level() {
-        return new LevelImpl(string(QUESTIONS).split("\n"));
+    public List<Level> levels() {
+        return Arrays.asList(new SampleAlgorithm(string(QUESTIONS)));
     }
 
     public Calculator<Void> calculator() {

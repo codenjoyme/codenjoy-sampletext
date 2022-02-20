@@ -23,21 +23,22 @@ package com.codenjoy.dojo.sampletext.services.ai;
  */
 
 
-import com.codenjoy.dojo.client.AbstractTextBoard;
 import com.codenjoy.dojo.client.AbstractTextSolver;
+import com.codenjoy.dojo.client.Strings;
 import com.codenjoy.dojo.services.Dice;
 
 public class AISolver extends AbstractTextSolver {
 
-    private Dice dice;
-    private AbstractTextBoard board;
-
     public AISolver(Dice dice) {
-        this.dice = dice;
+        // do nothing
     }
 
     @Override
-    public String getAnswer(String question) {
-        return "answer" + question.substring("question".length());
+    public Strings getAnswers(int level, Strings questions) {
+        return new Strings(){{
+            for (String question : questions) {
+                add("answer" + question.substring("question".length()));
+            }
+        }};
     }
 }

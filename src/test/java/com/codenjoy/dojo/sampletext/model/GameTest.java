@@ -27,13 +27,15 @@ import com.codenjoy.dojo.sampletext.TestGameSettings;
 import com.codenjoy.dojo.sampletext.services.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.dice.MockDice;
+import com.codenjoy.dojo.utils.JsonUtils;
+import com.codenjoy.dojo.utils.smart.SmartAssert;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.sampletext.services.GameSettings.Keys.QUESTIONS;
-import static com.codenjoy.dojo.utils.JsonUtils.clean;
-import static org.junit.Assert.assertEquals;
+import static com.codenjoy.dojo.utils.smart.SmartAssert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 public class GameTest {
@@ -51,6 +53,11 @@ public class GameTest {
         settings = new TestGameSettings();
     }
 
+    @After
+    public void after() {
+        SmartAssert.checkResult();
+    }
+
     private void dice(Integer... next) {
         dice.then(next);
     }
@@ -58,7 +65,7 @@ public class GameTest {
     private void givenQA(String... questionAnswers) {
         settings.string(QUESTIONS,
                 StringUtils.joinWith("\n", questionAnswers));
-        game = new SampleText(settings.level(), dice, settings);
+        game = new SampleText(dice, settings);
         listener = mock(EventListener.class);
         player = new Player(listener, settings);
         game.newGame(player);
@@ -66,7 +73,8 @@ public class GameTest {
     }
 
     private void thenHistory(String expected) {
-        assertEquals(expected, clean(player.history().toString()));
+        assertEquals(expected,
+                JsonUtils.prettyPrint(player.examiner().getHistory()));
     }
 
     @Test
@@ -76,6 +84,10 @@ public class GameTest {
                 "question3=answer3");
 
         thenHistory("[]");
+
+        thenQuestions("[\n" +
+                "  'question1'\n" +
+                "]");
     }
 
     @Test
@@ -88,6 +100,10 @@ public class GameTest {
         game.tick();
 
         thenHistory("[]");
+
+        thenQuestions("[\n" +
+                "  'question1'\n" +
+                "]");
     }
 
     @Test
@@ -97,10 +113,24 @@ public class GameTest {
                 "question3=answer3");
 
         // when
-        hero.message("wrong-answer");
+        hero.message("[wrong-answer]");
         game.tick();
 
-        thenHistory("[{'answer':'wrong-answer','question':'question1','valid':false}]");
+        thenHistory("[\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'wrong-answer',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':false\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]");
+
+        thenQuestions("[\n" +
+                "  'question1'\n" +
+                "]");
     }
 
     @Test
@@ -110,14 +140,36 @@ public class GameTest {
                 "question3=answer3");
 
         // when
-        hero.message("wrong-answer1");
+        hero.message("[wrong-answer1]");
         game.tick();
 
-        hero.message("wrong-answer2");
+        hero.message("[wrong-answer1, wrong-answer2]");
         game.tick();
 
-        thenHistory("[{'answer':'wrong-answer1','question':'question1','valid':false}, " +
-                "{'answer':'wrong-answer2','question':'question1','valid':false}]");
+        thenHistory("[\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'wrong-answer1',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':false\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'wrong-answer1',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':false\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]");
+
+        thenQuestions("[\n" +
+                "  'question1'\n" +
+                "]");
     }
 
     @Test
@@ -127,14 +179,37 @@ public class GameTest {
                 "question3=answer3");
 
         // when
-        hero.message("wrong-answer");
+        hero.message("[wrong-answer]");
         game.tick();
 
-        hero.message("answer1");
+        hero.message("[answer1]");
         game.tick();
 
-        thenHistory("[{'answer':'wrong-answer','question':'question1','valid':false}, " +
-                "{'answer':'answer1','question':'question1','valid':true}]");
+        thenHistory("[\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'wrong-answer',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':false\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'answer1',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':true\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]");
+
+        thenQuestions("[\n" +
+                "  'question1',\n" +
+                "  'question2'\n" +
+                "]");
     }
 
     @Test
@@ -144,16 +219,39 @@ public class GameTest {
                 "question3=answer3");
 
         // when
-        hero.message("wrong-answer");
+        hero.message("[wrong-answer]");
         game.tick();
 
-        hero.message("answer1");
+        hero.message("[answer1]");
         game.tick();
 
         game.tick();
 
-        thenHistory("[{'answer':'wrong-answer','question':'question1','valid':false}, " +
-                "{'answer':'answer1','question':'question1','valid':true}]");
+        thenHistory("[\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'wrong-answer',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':false\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'answer1',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':true\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]");
+
+        thenQuestions("[\n" +
+                "  'question1',\n" +
+                "  'question2'\n" +
+                "]");
     }
 
     @Test
@@ -163,18 +261,55 @@ public class GameTest {
                 "question3=answer3");
 
         // when
-        hero.message("wrong-answer");
+        hero.message("[wrong-answer]");
         game.tick();
 
-        hero.message("answer1");
+        hero.message("[answer1]");
         game.tick();
 
-        hero.message("answer2");
+        hero.message("[answer1, answer2]");
         game.tick();
 
-        thenHistory("[{'answer':'wrong-answer','question':'question1','valid':false}, " +
-                "{'answer':'answer1','question':'question1','valid':true}, " +
-                "{'answer':'answer2','question':'question2','valid':true}]");
+        thenHistory("[\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'wrong-answer',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':false\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'answer1',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':true\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'answer1',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':true\n" +
+                "      },\n" +
+                "      {\n" +
+                "        'answer':'answer2',\n" +
+                "        'question':'question2',\n" +
+                "        'valid':true\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]");
+
+        thenQuestions("[\n" +
+                "  'question1',\n" +
+                "  'question2',\n" +
+                "  'question3'\n" +
+                "]");
     }
 
     @Test
@@ -184,22 +319,59 @@ public class GameTest {
                 "question3=answer3");
 
         // when
-        hero.message("wrong-answer");
+        hero.message("[wrong-answer]");
         game.tick();
 
-        hero.message("answer1");
-        game.tick();
-
-        game.tick();
-
-        hero.message("answer2");
+        hero.message("[answer1]");
         game.tick();
 
         game.tick();
 
-        thenHistory("[{'answer':'wrong-answer','question':'question1','valid':false}, " +
-                "{'answer':'answer1','question':'question1','valid':true}, " +
-                "{'answer':'answer2','question':'question2','valid':true}]");
+        hero.message("[answer1, answer2]");
+        game.tick();
+
+        game.tick();
+
+        thenHistory("[\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'wrong-answer',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':false\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'answer1',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':true\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'answer1',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':true\n" +
+                "      },\n" +
+                "      {\n" +
+                "        'answer':'answer2',\n" +
+                "        'question':'question2',\n" +
+                "        'valid':true\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "]");
+
+        thenQuestions("[\n" +
+                "  'question1',\n" +
+                "  'question2',\n" +
+                "  'question3'\n" +
+                "]");
     }
 
     @Test
@@ -209,20 +381,71 @@ public class GameTest {
                 "question3=answer3");
 
         // when
-        hero.message("answer1");
+        hero.message("[answer1]");
         game.tick();
 
-        hero.message("answer2");
+        hero.message("[answer1, answer2]");
         game.tick();
 
-        hero.message("answer3");
+        hero.message("[answer1, answer2, answer3]");
         game.tick();
 
-        hero.message("answer4");
+        hero.message("[answer1, answer2, answer3, answer4]");
         game.tick();
 
-        thenHistory("[{'answer':'answer1','question':'question1','valid':true}, " +
-                "{'answer':'answer2','question':'question2','valid':true}, " +
-                "{'answer':'answer3','question':'question3','valid':true}]");
+        thenHistory("[\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'answer1',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':true\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'answer1',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':true\n" +
+                "      },\n" +
+                "      {\n" +
+                "        'answer':'answer2',\n" +
+                "        'question':'question2',\n" +
+                "        'valid':true\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    'questionAnswers':[\n" +
+                "      {\n" +
+                "        'answer':'answer1',\n" +
+                "        'question':'question1',\n" +
+                "        'valid':true\n" +
+                "      },\n" +
+                "      {\n" +
+                "        'answer':'answer2',\n" +
+                "        'question':'question2',\n" +
+                "        'valid':true\n" +
+                "      },\n" +
+                "      {\n" +
+                "        'answer':'answer3',\n" +
+                "        'question':'question3',\n" +
+                "        'valid':true\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  },\n" +
+                "  {\n" +
+                "    'questionAnswers':[]\n" +
+                "  }\n" +
+                "]");
+
+        thenQuestions("[]");
+    }
+
+    private void thenQuestions(String expected) {
+        assertEquals(expected,
+                JsonUtils.prettyPrint(player.levels().getQuestions()));
     }
 }

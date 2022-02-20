@@ -23,14 +23,18 @@ package com.codenjoy.dojo.sampletext.model;
  */
 
 
-import com.codenjoy.dojo.sampletext.services.Event;
 import com.codenjoy.dojo.sampletext.services.GameSettings;
 import com.codenjoy.dojo.services.EventListener;
 import com.codenjoy.dojo.services.Point;
 import com.codenjoy.dojo.services.multiplayer.GamePlayer;
+import com.codenjoy.dojo.services.questionanswer.Examiner;
+import com.codenjoy.dojo.services.questionanswer.event.FailTestEvent;
+import com.codenjoy.dojo.services.questionanswer.event.PassTestEvent;
+import com.codenjoy.dojo.services.questionanswer.levels.LevelsPool;
+import com.codenjoy.dojo.services.questionanswer.levels.LevelsPoolImpl;
 
-import java.util.LinkedList;
-import java.util.List;
+import static com.codenjoy.dojo.sampletext.services.Event.LOSE;
+import static com.codenjoy.dojo.sampletext.services.Event.WIN;
 
 /**
  * Класс игрока. Тут кроме героя может подсчитываться очки.
@@ -38,19 +42,19 @@ import java.util.List;
  */
 public class Player extends GamePlayer<Hero, Field> {
 
-    private List<QuestionAnswer> history;
-    private int questionIndex;
+    private LevelsPool level;
+    private Examiner examiner;
 
     public Player(EventListener listener, GameSettings settings) {
         super(listener, settings);
-        history = new LinkedList<>();
+        this.level = new LevelsPoolImpl(settings.levels());
+        examiner = new Examiner(level);
     }
 
     public void clearScore() {
-        if (history != null) {
-            history.clear();
+        if (examiner != null) {
+            examiner.clear();
         }
-        questionIndex = 0;
     }
 
     @Override
@@ -58,49 +62,23 @@ public class Player extends GamePlayer<Hero, Field> {
         return new Hero();
     }
 
-    public String getNextQuestion() { // TODO test me
-        if (field.isLastQuestion(questionIndex)) {
-            return "You win!";
-        }
-        return field.getQuestion(questionIndex);
-    }
-
-    public List<QuestionAnswer> history() {
-        List<QuestionAnswer> result = new LinkedList<>();
-        result.addAll(history);
-        return result;
-    }
-
     public void checkAnswer() {
         hero.tick();
 
-        String answer = hero.popAnswer();
-        if (answer != null && !field.isLastQuestion(questionIndex)) {
-            String question = field.getQuestion(questionIndex);
-            String validAnswer = field.getAnswer(questionIndex);
-            if (validAnswer.equals(answer)) {
-                logSuccess(question, answer);
-                event(Event.WIN);
-                questionIndex++;
-            } else {
-                logFailure(question, answer);
-                event(Event.LOSE);
-                questionIndex = 0;
+        for (Object event : examiner.ask(hero)) {
+            if (event instanceof FailTestEvent) {
+                event(LOSE);
+            } else if (event instanceof PassTestEvent) {
+                event(WIN);
             }
         }
     }
 
-    private void logSuccess(String question, String answer) {
-        log(question, answer, true);
+    public LevelsPool levels() {
+        return level;
     }
 
-    private void logFailure(String question, String answer) {
-        log(question, answer, false);
-    }
-
-    private void log(String question, String answer, boolean valid) {
-        QuestionAnswer qa = new QuestionAnswer(question, answer);
-        qa.setValid(valid);
-        history.add(qa);
+    public Examiner examiner() {
+        return examiner;
     }
 }

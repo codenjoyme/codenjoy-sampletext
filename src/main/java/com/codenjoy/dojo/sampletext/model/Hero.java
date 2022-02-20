@@ -23,11 +23,11 @@ package com.codenjoy.dojo.sampletext.model;
  */
 
 
-import com.codenjoy.dojo.services.*;
+import com.codenjoy.dojo.services.Joystick;
+import com.codenjoy.dojo.services.Tickable;
 import com.codenjoy.dojo.services.joystick.MessageJoystick;
 import com.codenjoy.dojo.services.multiplayer.PlayerHero;
-
-import java.util.Arrays;
+import com.codenjoy.dojo.services.questionanswer.Respondent;
 
 /**
  * Это реализация героя. Обрати внимание, что он реализует {@link Joystick},
@@ -38,18 +38,19 @@ import java.util.Arrays;
  *
  * Эти интерфейсы объявлены в {@link PlayerHero}.
  */
-public class Hero extends PlayerHero<Field> implements MessageJoystick {
+public class Hero extends PlayerHero<Field> implements MessageJoystick, Respondent {
 
     private boolean alive;
-    private String answer;
+    private String answers;
 
     public Hero() {
         alive = true;
+        clearFlags();
     }
 
     @Override
     public void message(String answer) {
-        this.answer = answer;
+        this.answers = answer;
     }
 
     @Override
@@ -62,9 +63,10 @@ public class Hero extends PlayerHero<Field> implements MessageJoystick {
         return alive;
     }
 
-    public String popAnswer() {
-        String answer = this.answer;
-        this.answer = null;
-        return answer;
+    @Override
+    public String popAnswers() {
+        String answers = this.answers;
+        this.answers = null;
+        return answers;
     }
 }

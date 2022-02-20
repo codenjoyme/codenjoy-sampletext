@@ -1,4 +1,4 @@
-package com.codenjoy.dojo.sampletext.model;
+package com.codenjoy.dojo.sampletext.model.algorithms;
 
 /*-
  * #%L
@@ -23,37 +23,21 @@ package com.codenjoy.dojo.sampletext.model;
  */
 
 
-import java.util.LinkedList;
-import java.util.List;
+import com.codenjoy.dojo.services.questionanswer.levels.QuestionAnswerLevelImpl;
 
-/**
- * Полезный утилитный класс для обработки текстовых заданий
- */
-public class LevelImpl implements Level {
+public class SampleAlgorithm extends QuestionAnswerLevelImpl {
 
-    private List<String> questions = new LinkedList<>();
-    private List<String> answers = new LinkedList<>();
-
-    public LevelImpl(String... questionAnswers) {
-        for (String qa : questionAnswers) {
-            String[] split = qa.split("=");
-            questions.add(split[0]);
-            answers.add(split[1]);
-        }
+    public SampleAlgorithm(String input) {
+        super(input.split("\n"));
     }
 
     @Override
-    public List<String> questions() {
-        return questions;
+    public String description() {
+        return "Дай ответы на все вопросы.";
     }
 
     @Override
-    public List<String> answers() {
-        return answers;
-    }
-
-    @Override
-    public int size() {
-        return questions.size();
+    public int complexity() {
+        return 10;
     }
 }

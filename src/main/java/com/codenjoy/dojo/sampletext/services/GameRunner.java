@@ -58,7 +58,7 @@ public class GameRunner extends AbstractGameType<GameSettings>{
 
     @Override
     public SampleText createGame(int levelNumber, GameSettings settings) {
-        return new SampleText(settings.level(), getDice(), settings);
+        return new SampleText(getDice(), settings);
     }
 
     @Override
@@ -105,10 +105,10 @@ public class GameRunner extends AbstractGameType<GameSettings>{
     public PrinterFactory getPrinterFactory() {
         return PrinterFactory.get((BoardReader reader, Player player) -> {
             JSONObject result = new JSONObject();
-
-            result.put("nextQuestion", player.getNextQuestion());
-            result.put("history", player.history());
-
+            result.put("level", player.levels().getLevelIndex());
+            result.put("questions", player.levels().getQuestions());
+            result.put("nextQuestion", player.levels().getNextQuestion());
+            result.put("history", player.examiner().getLastHistory());
             return result;
         });
     }

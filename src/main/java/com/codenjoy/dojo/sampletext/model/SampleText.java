@@ -41,14 +41,12 @@ import static java.util.stream.Collectors.toList;
  */
 public class SampleText implements Field {
 
-    private Level level;
     private List<Player> players;
     private Dice dice;
 
     private GameSettings settings;
 
-    public SampleText(Level level, Dice dice, GameSettings settings) {
-        this.level = level;
+    public SampleText(Dice dice, GameSettings settings) {
         this.dice = dice;
         this.settings = settings;
         players = new LinkedList<>();
@@ -90,20 +88,5 @@ public class SampleText implements Field {
     @Override
     public int size() {
         return 0;
-    }
-
-    @Override
-    public String getQuestion(int index) {
-        return level.questions().get(index);
-    }
-
-    @Override
-    public String getAnswer(int index) {
-        return level.answers().get(index);
-    }
-
-    @Override
-    public boolean isLastQuestion(int index) {
-        return index >= level.size();
     }
 }

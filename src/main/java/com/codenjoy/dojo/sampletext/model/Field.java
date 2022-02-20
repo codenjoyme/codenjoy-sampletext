@@ -27,9 +27,4 @@ import com.codenjoy.dojo.services.multiplayer.GameField;
 
 public interface Field extends GameField<Player, Hero> {
 
-    String getQuestion(int index);
-
-    String getAnswer(int index);
-
-    boolean isLastQuestion(int index);
 }

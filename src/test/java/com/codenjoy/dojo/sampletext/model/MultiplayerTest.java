@@ -33,11 +33,13 @@ import com.codenjoy.dojo.services.dice.MockDice;
 import com.codenjoy.dojo.services.multiplayer.Single;
 import com.codenjoy.dojo.services.printer.PrinterFactory;
 import com.codenjoy.dojo.utils.JsonUtils;
+import com.codenjoy.dojo.utils.smart.SmartAssert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.sampletext.services.GameSettings.Keys.QUESTIONS;
-import static org.junit.Assert.assertEquals;
+import static com.codenjoy.dojo.utils.smart.SmartAssert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class MultiplayerTest {
@@ -61,7 +63,7 @@ public class MultiplayerTest {
                         "question3=answer3");
 
         dice = new MockDice();
-        field = new SampleText(settings.level(), dice, settings);
+        field = new SampleText(dice, settings);
         PrinterFactory factory = new GameRunner().getPrinterFactory();
 
         listener1 = mock(EventListener.class);
@@ -86,6 +88,11 @@ public class MultiplayerTest {
         game3.newGame();
     }
 
+    @After
+    public void after() {
+        SmartAssert.checkResult();
+    }
+
     private void dice(Integer... next) {
         dice.then(next);
     }
@@ -95,7 +102,8 @@ public class MultiplayerTest {
     }
 
     private void assertField(String expected, Game game) {
-        assertEquals(expected, JsonUtils.toStringSorted(game.getBoardAsString().toString()).replace('\"', '\''));
+        assertEquals(expected,
+                JsonUtils.prettyPrint(game.getBoardAsString()));
     }
 
     private void asrtFl2(String expected) {
@@ -109,9 +117,32 @@ public class MultiplayerTest {
     // рисуем несколько игроков
     @Test
     public void shouldPrint() {
-        asrtFl1("{'history':[],'nextQuestion':'question1'}");
-        asrtFl2("{'history':[],'nextQuestion':'question1'}");
-        asrtFl3("{'history':[],'nextQuestion':'question1'}");
+        asrtFl1("{\n" +
+                "  'history':[],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question1',\n" +
+                "  'questions':[\n" +
+                "    'question1'\n" +
+                "  ]\n" +
+                "}");
+
+        asrtFl2("{\n" +
+                "  'history':[],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question1',\n" +
+                "  'questions':[\n" +
+                "    'question1'\n" +
+                "  ]\n" +
+                "}");
+
+        asrtFl3("{\n" +
+                "  'history':[],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question1',\n" +
+                "  'questions':[\n" +
+                "    'question1'\n" +
+                "  ]\n" +
+                "}");
     }
 
     // Каждый игрок может упраыляться за тик игры независимо,
@@ -119,24 +150,63 @@ public class MultiplayerTest {
     @Test
     public void shouldJoystick() {
         // when
-        game1.getJoystick().message("wrong-message");
-        game1.getJoystick().message("answer1");
+        game1.getJoystick().message("[wrong-message]");
+        game1.getJoystick().message("[answer1]");
 
-        game2.getJoystick().message("answer2");
+        game2.getJoystick().message("[answer1, answer2]");
 
-        game3.getJoystick().message("answer3");
+        game3.getJoystick().message("[answer1, answer2, answer3]");
 
         field.tick();
 
         // then
-        asrtFl1("{'history':[{'answer':'answer1','question':'question1','valid':true}]," +
-                "'nextQuestion':'question2'}");
+        asrtFl1("{\n" +
+                "  'history':[\n" +
+                "    {\n" +
+                "      'answer':'answer1',\n" +
+                "      'question':'question1',\n" +
+                "      'valid':true\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question2',\n" +
+                "  'questions':[\n" +
+                "    'question1',\n" +
+                "    'question2'\n" +
+                "  ]\n" +
+                "}");
 
-        asrtFl2("{'history':[{'answer':'answer2','question':'question1','valid':false}]," +
-                "'nextQuestion':'question1'}");
+        asrtFl2("{\n" +
+                "  'history':[\n" +
+                "    {\n" +
+                "      'answer':'answer1',\n" +
+                "      'question':'question1',\n" +
+                "      'valid':true\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question2',\n" +
+                "  'questions':[\n" +
+                "    'question1',\n" +
+                "    'question2'\n" +
+                "  ]\n" +
+                "}");
 
-        asrtFl3("{'history':[{'answer':'answer3','question':'question1','valid':false}]," +
-                "'nextQuestion':'question1'}");
+        asrtFl3("{\n" +
+                "  'history':[\n" +
+                "    {\n" +
+                "      'answer':'answer1',\n" +
+                "      'question':'question1',\n" +
+                "      'valid':true\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question2',\n" +
+                "  'questions':[\n" +
+                "    'question1',\n" +
+                "    'question2'\n" +
+                "  ]\n" +
+                "}");
     }
 
     // игроков можно удалять из игры
@@ -146,10 +216,33 @@ public class MultiplayerTest {
 
         field.tick();
 
-        asrtFl1("{'history':[],'nextQuestion':'question1'}");
-        asrtFl2("{'history':[],'nextQuestion':'question1'}");
+        asrtFl1("{\n" +
+                "  'history':[],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question1',\n" +
+                "  'questions':[\n" +
+                "    'question1'\n" +
+                "  ]\n" +
+                "}");
+
+        asrtFl2("{\n" +
+                "  'history':[],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question1',\n" +
+                "  'questions':[\n" +
+                "    'question1'\n" +
+                "  ]\n" +
+                "}");
+
         try {
-            asrtFl3("{'history':[],'nextQuestion':'question1'}");
+            asrtFl3("{\n" +
+                    "  'history':[],\n" +
+                    "  'level':0,\n" +
+                    "  'nextQuestion':'question1',\n" +
+                    "  'questions':[\n" +
+                    "    'question1'\n" +
+                    "  ]\n" +
+                    "}");
         } catch (IllegalStateException e) {
             assertEquals("No board for this player", e.getMessage());
         }
@@ -159,38 +252,161 @@ public class MultiplayerTest {
     @Test
     public void shouldKill() {
         // given
-        game1.getJoystick().message("answer1");
-        game2.getJoystick().message("answer1");
-        game3.getJoystick().message("answer1");
+        game1.getJoystick().message("[answer1]");
+        game2.getJoystick().message("[answer1]");
+        game3.getJoystick().message("[answer1]");
 
         field.tick();
 
-        asrtFl1("{'history':[{'answer':'answer1','question':'question1','valid':true}],'nextQuestion':'question2'}");
-        asrtFl2("{'history':[{'answer':'answer1','question':'question1','valid':true}],'nextQuestion':'question2'}");
-        asrtFl3("{'history':[{'answer':'answer1','question':'question1','valid':true}],'nextQuestion':'question2'}");
+        asrtFl1("{\n" +
+                "  'history':[\n" +
+                "    {\n" +
+                "      'answer':'answer1',\n" +
+                "      'question':'question1',\n" +
+                "      'valid':true\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question2',\n" +
+                "  'questions':[\n" +
+                "    'question1',\n" +
+                "    'question2'\n" +
+                "  ]\n" +
+                "}");
+
+        asrtFl2("{\n" +
+                "  'history':[\n" +
+                "    {\n" +
+                "      'answer':'answer1',\n" +
+                "      'question':'question1',\n" +
+                "      'valid':true\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question2',\n" +
+                "  'questions':[\n" +
+                "    'question1',\n" +
+                "    'question2'\n" +
+                "  ]\n" +
+                "}");
+
+        asrtFl3("{\n" +
+                "  'history':[\n" +
+                "    {\n" +
+                "      'answer':'answer1',\n" +
+                "      'question':'question1',\n" +
+                "      'valid':true\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question2',\n" +
+                "  'questions':[\n" +
+                "    'question1',\n" +
+                "    'question2'\n" +
+                "  ]\n" +
+                "}");
 
         // when
         game1.newGame();
         field.tick();
 
-        asrtFl1("{'history':[],'nextQuestion':'question1'}");
-        asrtFl2("{'history':[{'answer':'answer1','question':'question1','valid':true}],'nextQuestion':'question2'}");
-        asrtFl3("{'history':[{'answer':'answer1','question':'question1','valid':true}],'nextQuestion':'question2'}");
+        asrtFl1("{\n" +
+                "  'history':[],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question1',\n" +
+                "  'questions':[\n" +
+                "    'question1'\n" +
+                "  ]\n" +
+                "}");
+
+        asrtFl2("{\n" +
+                "  'history':[\n" +
+                "    {\n" +
+                "      'answer':'answer1',\n" +
+                "      'question':'question1',\n" +
+                "      'valid':true\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question2',\n" +
+                "  'questions':[\n" +
+                "    'question1',\n" +
+                "    'question2'\n" +
+                "  ]\n" +
+                "}");
+
+        asrtFl3("{\n" +
+                "  'history':[\n" +
+                "    {\n" +
+                "      'answer':'answer1',\n" +
+                "      'question':'question1',\n" +
+                "      'valid':true\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question2',\n" +
+                "  'questions':[\n" +
+                "    'question1',\n" +
+                "    'question2'\n" +
+                "  ]\n" +
+                "}");
     }
 
     // игрок может ответить правильно и неправильно
     @Test
     public void shouldEvents() {
         // given
-        game1.getJoystick().message("answer1");
-        game2.getJoystick().message("answer2");
-        game3.getJoystick().message("answer3");
+        game1.getJoystick().message("[answer1]");
+        game2.getJoystick().message("[answer2]");
+        game3.getJoystick().message("[answer3]");
 
         field.tick();
 
-        asrtFl1("{'history':[{'answer':'answer1','question':'question1','valid':true}],'nextQuestion':'question2'}");
-        asrtFl2("{'history':[{'answer':'answer2','question':'question1','valid':false}],'nextQuestion':'question1'}");
-        asrtFl3("{'history':[{'answer':'answer3','question':'question1','valid':false}],'nextQuestion':'question1'}");
+        asrtFl1("{\n" +
+                "  'history':[\n" +
+                "    {\n" +
+                "      'answer':'answer1',\n" +
+                "      'question':'question1',\n" +
+                "      'valid':true\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question2',\n" +
+                "  'questions':[\n" +
+                "    'question1',\n" +
+                "    'question2'\n" +
+                "  ]\n" +
+                "}");
+
+        asrtFl2("{\n" +
+                "  'history':[\n" +
+                "    {\n" +
+                "      'answer':'answer2',\n" +
+                "      'question':'question1',\n" +
+                "      'valid':false\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question1',\n" +
+                "  'questions':[\n" +
+                "    'question1'\n" +
+                "  ]\n" +
+                "}");
+
+        asrtFl3("{\n" +
+                "  'history':[\n" +
+                "    {\n" +
+                "      'answer':'answer3',\n" +
+                "      'question':'question1',\n" +
+                "      'valid':false\n" +
+                "    }\n" +
+                "  ],\n" +
+                "  'level':0,\n" +
+                "  'nextQuestion':'question1',\n" +
+                "  'questions':[\n" +
+                "    'question1'\n" +
+                "  ]\n" +
+                "}");
 
         // then
         verify(listener1).event(Event.WIN);
