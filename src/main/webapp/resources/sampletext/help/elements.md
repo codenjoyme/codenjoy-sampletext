@@ -1,5 +1,3 @@
-<meta charset="UTF-8">
-
 ## Symbol breakdown
 | Sprite | Code | Description |
 | -------- | -------- | -------- |
