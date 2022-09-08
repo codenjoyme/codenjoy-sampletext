@@ -71,7 +71,7 @@ to the next question.
 
 TODO
 
-![](board.png)
+![](/codenjoy-contest/resources/sampletext/help/board.png)
 
 <meta charset="UTF-8">
 

@@ -68,7 +68,7 @@ BoardData json включает в себя историю вопросов с �
 
 TODO
 
-![](board.png)
+![](/codenjoy-contest/resources/sampletext/help/board.png)
 
 <meta charset="UTF-8">
 
