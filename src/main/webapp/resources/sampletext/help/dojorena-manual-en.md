@@ -85,7 +85,7 @@ TODO
 
 ## Settings
 
-The settings will change[*](#ask) as the game progresses.
+The settings will change[(?)](#ask) as the game progresses.
 
 ## Cases
 
