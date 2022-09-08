@@ -114,7 +114,7 @@ The main goal is to play a meaningful game and win.
 <! -- description of controversial or unclear points in the game -->
 * 
 
-## <a id=""ask""></a> Ask Sensei
+## <a id="ask"></a> Ask Sensei
 
 You can always see the settings of the current game
 [here](/codenjoy-contest/rest/settings/player).
