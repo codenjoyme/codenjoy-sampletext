@@ -49,6 +49,10 @@ to the next question.
 
 TODO
 
+![](https://dojorena.io/codenjoy-contest/resources/sampletext/help/board.png)
+
+<meta charset="UTF-8">
+
 ## Symbol breakdown
 | Sprite | Code | Description |
 | -------- | -------- | -------- |

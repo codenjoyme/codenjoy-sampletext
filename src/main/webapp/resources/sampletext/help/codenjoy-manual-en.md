@@ -71,6 +71,10 @@ to the next question.
 
 TODO
 
+![](board.png)
+
+<meta charset="UTF-8">
+
 ## Symbol breakdown
 | Sprite | Code | Description |
 | -------- | -------- | -------- |
