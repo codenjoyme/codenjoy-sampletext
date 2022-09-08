@@ -110,6 +110,10 @@ The first task is to write a websocket client that connects to the server. Then 
 This will prepare the player for the main game.
 The main goal is to play a meaningful game and win.
 
+## FAQ
+<! -- description of controversial or unclear points in the game -->
+* 
+
 ## <a id=""ask""></a> Ask Sensei
 
 You can always see the settings of the current game
@@ -131,10 +135,6 @@ All languages in one way or another have a similar set of methods:
   Contains logic for easy search and manipulation of elements on the board.
 * and so on...
 
-
-## FAQ
-<! -- description of controversial or unclear points in the game -->
-* 
 
 ## Want to host an event?
 
