@@ -56,14 +56,14 @@ to the next question.
 
 TODO
 
-<img src="/codenjoy-contest/resources/sampletext/help/board.png" style="height:100%;" />
+<img src="/codenjoy-contest/resources/sampletext/help/board.png" style="height:auto;" />
 
 <meta charset="UTF-8">
 
 ## Symbol breakdown
 | Sprite | Code | Description |
 | -------- | -------- | -------- |
-|<img src="/codenjoy-contest/resources/sampletext/sprite/none.png" style="height:100%;" /> | `NONE(' ')` | There are no elements for this game. | 
+|<img src="/codenjoy-contest/resources/sampletext/sprite/none.png" style="height:auto;" /> | `NONE(' ')` | There are no elements for this game. | 
 
 
 ## How do you play?
