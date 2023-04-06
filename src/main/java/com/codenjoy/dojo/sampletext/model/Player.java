@@ -53,7 +53,7 @@ public class Player extends GamePlayer<Hero, Field> {
 
     public void clearScore() {
         if (examiner != null) {
-            examiner.clear();
+            examiner.clear(0);
         }
     }
 
