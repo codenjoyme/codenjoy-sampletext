@@ -121,6 +121,7 @@ public class GameTest {
                 "    'questionAnswers':[\n" +
                 "      {\n" +
                 "        'answer':'wrong-answer',\n" +
+                "        'expected':'answer1',\n" +
                 "        'question':'question1',\n" +
                 "        'valid':false\n" +
                 "      }\n" +
@@ -151,6 +152,7 @@ public class GameTest {
                 "    'questionAnswers':[\n" +
                 "      {\n" +
                 "        'answer':'wrong-answer1',\n" +
+                "        'expected':'answer1',\n" +
                 "        'question':'question1',\n" +
                 "        'valid':false\n" +
                 "      }\n" +
@@ -160,6 +162,7 @@ public class GameTest {
                 "    'questionAnswers':[\n" +
                 "      {\n" +
                 "        'answer':'wrong-answer1',\n" +
+                "        'expected':'answer1',\n" +
                 "        'question':'question1',\n" +
                 "        'valid':false\n" +
                 "      }\n" +
@@ -190,6 +193,7 @@ public class GameTest {
                 "    'questionAnswers':[\n" +
                 "      {\n" +
                 "        'answer':'wrong-answer',\n" +
+                "        'expected':'answer1',\n" +
                 "        'question':'question1',\n" +
                 "        'valid':false\n" +
                 "      }\n" +
@@ -232,6 +236,7 @@ public class GameTest {
                 "    'questionAnswers':[\n" +
                 "      {\n" +
                 "        'answer':'wrong-answer',\n" +
+                "        'expected':'answer1',\n" +
                 "        'question':'question1',\n" +
                 "        'valid':false\n" +
                 "      }\n" +
@@ -275,6 +280,7 @@ public class GameTest {
                 "    'questionAnswers':[\n" +
                 "      {\n" +
                 "        'answer':'wrong-answer',\n" +
+                "        'expected':'answer1',\n" +
                 "        'question':'question1',\n" +
                 "        'valid':false\n" +
                 "      }\n" +
@@ -337,6 +343,7 @@ public class GameTest {
                 "    'questionAnswers':[\n" +
                 "      {\n" +
                 "        'answer':'wrong-answer',\n" +
+                "        'expected':'answer1',\n" +
                 "        'question':'question1',\n" +
                 "        'valid':false\n" +
                 "      }\n" +

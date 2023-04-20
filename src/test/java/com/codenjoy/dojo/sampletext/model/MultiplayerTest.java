@@ -382,6 +382,7 @@ public class MultiplayerTest {
                 "  'history':[\n" +
                 "    {\n" +
                 "      'answer':'answer2',\n" +
+                "      'expected':'answer1',\n" +
                 "      'question':'question1',\n" +
                 "      'valid':false\n" +
                 "    }\n" +
@@ -397,6 +398,7 @@ public class MultiplayerTest {
                 "  'history':[\n" +
                 "    {\n" +
                 "      'answer':'answer3',\n" +
+                "      'expected':'answer1',\n" +
                 "      'question':'question1',\n" +
                 "      'valid':false\n" +
                 "    }\n" +
