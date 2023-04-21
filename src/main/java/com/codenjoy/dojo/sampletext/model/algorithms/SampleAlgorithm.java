@@ -25,6 +25,9 @@ package com.codenjoy.dojo.sampletext.model.algorithms;
 
 import com.codenjoy.dojo.services.questionanswer.levels.QuestionAnswerLevelImpl;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class SampleAlgorithm extends QuestionAnswerLevelImpl {
 
     public SampleAlgorithm(String input) {
@@ -32,8 +35,8 @@ public class SampleAlgorithm extends QuestionAnswerLevelImpl {
     }
 
     @Override
-    public String description() {
-        return "Дай ответы на все вопросы.";
+    public List<String> description() {
+        return Arrays.asList("Дай ответы на все вопросы.");
     }
 
     @Override
