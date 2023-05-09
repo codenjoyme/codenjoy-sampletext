@@ -75,7 +75,7 @@ public class ScoresTest {
     }
 
     @Test
-    public void shouldStillZeroAfterDead() {
+    public void shouldNotBeLessThanZero() {
         lose();
 
         assertEquals(0, scores.getScore());
