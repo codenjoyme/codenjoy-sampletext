@@ -82,7 +82,7 @@ public class ScoresTest {
     }
 
     @Test
-    public void shouldClearScore() {
+    public void shouldCleanScore() {
         win();
 
         scores.clear();
