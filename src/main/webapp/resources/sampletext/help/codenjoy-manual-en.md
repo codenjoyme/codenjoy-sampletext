@@ -71,7 +71,7 @@ to the next question.
 
 TODO
 
-<img src="/codenjoy-contest/resources/sampletext/help/board.png" style="height:auto;" />
+<img src="/codenjoy-contest/resources/sampletext/img/board/large.png" style="height:auto;" />
 
 <meta charset="UTF-8">
 
