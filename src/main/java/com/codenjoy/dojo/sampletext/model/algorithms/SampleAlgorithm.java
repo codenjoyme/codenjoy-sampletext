@@ -43,4 +43,8 @@ public class SampleAlgorithm extends QuestionAnswerLevelImpl {
     public int complexity() {
         return 10;
     }
+
+    @Override
+    public void setComplexity(int value) {
+    }
 }
