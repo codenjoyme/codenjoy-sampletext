@@ -95,6 +95,13 @@ The first task is to write a websocket client that connects to the server. Then 
 This will prepare the player for the main game.
 The main goal is to play a meaningful game and win.
 
+| Settings name | Action |
+|---------------|--------|
+| WIN_SCORE | [Score] Win score |
+| QUESTIONS | [Game] Questions |
+| LOSE_PENALTY | [Score] Lose penalty |
+
+
 ## FAQ
 <! -- description of controversial or unclear points in the game -->
 * 

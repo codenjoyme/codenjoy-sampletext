@@ -108,6 +108,13 @@ TODO
 Таким образом, игрок подготовится к основной игре.
 Основная цель – вести осмысленную игру и победить.
 
+| Settings name | Action |
+|---------------|--------|
+| WIN_SCORE | [Score] Win score |
+| QUESTIONS | [Game] Questions |
+| LOSE_PENALTY | [Score] Lose penalty |
+
+
 ## FAQ
 <!-- описание спорных или непонятных моментов в игре -->
 * 
