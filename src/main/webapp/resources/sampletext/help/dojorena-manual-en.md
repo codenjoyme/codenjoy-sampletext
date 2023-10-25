@@ -95,10 +95,15 @@ The first task is to write a websocket client that connects to the server. Then 
 This will prepare the player for the main game.
 The main goal is to play a meaningful game and win.
 
-## Settings
+## <a id="ask"></a> Settings
 
-The parameters will change[(?)](#ask) as the game progresses.
-The default values are shown in the table below:
+The parameters will change as the game progresses.
+You can always see the settings of the current game
+[here](/codenjoy-contest/rest/settings/player).
+Please ask Sensei about current game settings. You can find Sensei in
+the chat that the organizers have provided to discuss issues.
+
+All settings are shown in the table below:
 
 | Action | Settings name |
 |--------|---------------|
@@ -110,13 +115,6 @@ The default values are shown in the table below:
 ## FAQ
 <! -- description of controversial or unclear points in the game -->
 * 
-
-## <a id="ask"></a> Ask Sensei
-
-You can always see the settings of the current game
-[here](/codenjoy-contest/rest/settings/player).
-Please ask Sensei about current game settings. You can find Sensei in
-the chat that the organizers have provided to discuss issues.
 
 ## Client and API
 
