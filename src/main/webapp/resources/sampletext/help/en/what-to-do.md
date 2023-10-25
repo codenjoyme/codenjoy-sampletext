@@ -15,10 +15,6 @@ There are several commands:
 
 TODO
 
-## Settings
-
-The settings will change[(?)](#ask) as the game progresses.
-
 ## Cases
 
 ## Hints
