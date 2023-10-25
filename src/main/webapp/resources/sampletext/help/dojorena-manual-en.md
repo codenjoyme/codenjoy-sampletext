@@ -100,11 +100,11 @@ The main goal is to play a meaningful game and win.
 The parameters will change[(?)](#ask) as the game progresses.
 The default values are shown in the table below:
 
-| Settings name | Action |
-|---------------|--------|
-| WIN_SCORE | [Score] Win score |
-| LOSE_PENALTY | [Score] Lose penalty |
-| QUESTIONS | [Game] Questions |
+| Action | Settings name |
+|--------|---------------|
+| [Score] Win score | WIN_SCORE |
+| [Score] Lose penalty | LOSE_PENALTY |
+| [Game] Questions | QUESTIONS |
 
 
 ## FAQ

@@ -113,11 +113,11 @@ TODO
 Параметры будут меняться[(?)](#ask) по ходу игры. 
 Значения по-умолчанию представлены в таблице ниже:
 
-| Settings name | Action |
-|---------------|--------|
-| WIN_SCORE | [Score] Win score |
-| LOSE_PENALTY | [Score] Lose penalty |
-| QUESTIONS | [Game] Questions |
+| Action | Settings name |
+|--------|---------------|
+| [Score] Win score | WIN_SCORE |
+| [Score] Lose penalty | LOSE_PENALTY |
+| [Game] Questions | QUESTIONS |
 
 
 ## FAQ
