@@ -95,6 +95,11 @@ The first task is to write a websocket client that connects to the server. Then 
 This will prepare the player for the main game.
 The main goal is to play a meaningful game and win.
 
+## Settings
+
+The parameters will change[(?)](#ask) as the game progresses.
+The default values are shown in the table below:
+
 | Settings name | Action |
 |---------------|--------|
 | WIN_SCORE | [Score] Win score |
