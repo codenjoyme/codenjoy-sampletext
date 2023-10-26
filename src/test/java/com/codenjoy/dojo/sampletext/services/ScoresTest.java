@@ -24,69 +24,77 @@ package com.codenjoy.dojo.sampletext.services;
 
 
 import com.codenjoy.dojo.sampletext.TestGameSettings;
-import com.codenjoy.dojo.services.PlayerScores;
-import com.codenjoy.dojo.services.event.Calculator;
-import com.codenjoy.dojo.services.event.ScoresImpl;
-import org.junit.Before;
+import com.codenjoy.dojo.services.event.ScoresMap;
+import com.codenjoy.dojo.utils.scorestest.AbstractScoresTest;
 import org.junit.Test;
 
 import static com.codenjoy.dojo.sampletext.services.GameSettings.Keys.LOSE_PENALTY;
 import static com.codenjoy.dojo.sampletext.services.GameSettings.Keys.WIN_SCORE;
-import static org.junit.Assert.assertEquals;
 
-public class ScoresTest {
+public class ScoresTest extends AbstractScoresTest {
 
-    private PlayerScores scores;
-    private GameSettings settings;
-
-    public void lose() {
-        scores.event(Event.LOSE);
+    @Override
+    public GameSettings settings() {
+        return new TestGameSettings()
+                .integer(WIN_SCORE, 1)
+                .integer(LOSE_PENALTY, -1);
     }
 
-    public void win() {
-        scores.event(Event.WIN);
+    @Override
+    protected Class<? extends ScoresMap> scores() {
+        return Scores.class;
     }
 
-    @Before
-    public void setup() {
-        settings = new TestGameSettings();
-        givenScores(0);
+    @Override
+    protected Class<? extends Enum> eventTypes() {
+        return Event.class;
     }
 
     @Test
     public void shouldCollectScores() {
-        givenScores(140);
-
-        win();
-        win();
-        win();
-        win();
-
-        lose();
-
-        assertEquals(140
-                + 4 * settings.integer(WIN_SCORE)
-                + settings.integer(LOSE_PENALTY),
-                scores.getScore());
-    }
-
-    private void givenScores(int score) {
-        scores = new ScoresImpl<>(score, new Calculator<>(new Scores(settings)));
+        assertEvents("100:\n" +
+                "WIN > +1 = 101\n" +
+                "WIN > +1 = 102\n" +
+                "WIN > +1 = 103\n" +
+                "WIN > +1 = 104\n" +
+                "LOSE > -1 = 103");
     }
 
     @Test
     public void shouldNotBeLessThanZero() {
-        lose();
-
-        assertEquals(0, scores.getScore());
+        assertEvents("1:\n" +
+                "LOSE > -1 = 0\n" +
+                "LOSE > +0 = 0\n" +
+                "LOSE > +0 = 0");
     }
 
     @Test
     public void shouldCleanScore() {
-        win();
+        assertEvents("100:\n" +
+                "WIN > +1 = 101\n" +
+                "(CLEAN) > -101 = 0\n" +
+                "WIN > +1 = 1");
+    }
 
-        scores.clear();
+    @Test
+    public void shouldCollectScores_whenWin() {
+        // given
+        settings.integer(WIN_SCORE, 1);
 
-        assertEquals(0, scores.getScore());
+        // when then
+        assertEvents("100:\n" +
+                "WIN > +1 = 101\n" +
+                "WIN > +1 = 102");
+    }
+
+    @Test
+    public void shouldCollectScores_whenLose() {
+        // given
+        settings.integer(LOSE_PENALTY, -1);
+
+        // when then
+        assertEvents("100:\n" +
+                "LOSE > -1 = 99\n" +
+                "LOSE > -1 = 98");
     }
 }
